@@ -19,12 +19,14 @@ export async function POST(request:NextRequest) {
       return NextResponse.json({error:"User with smae Username or Email already exists."},{status:400});
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword=await bcrypt.hash(password, 10);
 
     const newUser= new User({
       username,
       email,
-      password:hashedPassword
+      password
+      //not password:hashedPassword
+      //as when we will be saving the newUser for the first time it will actually  hash the hased password we are giving there
     });
     
     const savedUser= await newUser.save();
@@ -32,6 +34,8 @@ export async function POST(request:NextRequest) {
     if(!savedUser){
       return NextResponse.json({error:"Could Not Sign Up User"},{status:500});
     }
+
+    console.log(savedUser);
 
     return NextResponse.json({
       message:"User Created Successfully.",

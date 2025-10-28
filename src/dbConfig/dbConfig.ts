@@ -2,7 +2,8 @@ import mongoose from 'mongoose';
 
 export async function connect() {
   try {
-    await mongoose.connect(process.env.MONGO_URI||"");
+    await mongoose.connect(process.env.MONGO_URI!);
+    //process.env.MONGO_URI! tells that process.env.MONGO_URI will never be null or undefined
     const connection = mongoose.connection;
 
     connection.on('connected', () => {
